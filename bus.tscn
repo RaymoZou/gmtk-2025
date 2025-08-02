@@ -7,3 +7,4 @@
 script = ExtResource("1_n5sl8")
 
 [node name="bus" parent="." instance=ExtResource("2_ff36x")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.31734, 0)
