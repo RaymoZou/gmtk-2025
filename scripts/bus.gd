@@ -1,18 +1,18 @@
 extends Node3D
 
-# TODO: make the bus follow a predetermined route
+class_name Bus
 
+const SPEED_INCREMENT : int = 2
 var passenger_count: int
+var speed : int = 8
 
 func _init() -> void:
-	print("i am a bus")
+	print("bus initialized")
+	GameManager.increase_bus_speed.connect(_on_increase_bus_speed)
 	
-# TODO:
-func move():
-	return
-	
-func _process(delta: float) -> void:
-	move()
+func _on_increase_bus_speed():
+	speed += SPEED_INCREMENT
+	SignalBus.speed_increased.emit(speed)
 
 func load_passengers() -> void:
 	print('Load passengers')
