@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://v7vywqu30d8u"]
+[gd_scene load_steps=7 format=3 uid="uid://v7vywqu30d8u"]
 
 [ext_resource type="Script" uid="uid://dytohafinj5k7" path="res://scripts/move.gd" id="1_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://hrrmvxfuv0pg" path="res://bus.tscn" id="1_ig7tw"]
+[ext_resource type="PackedScene" uid="uid://b5cmvjy41uyh2" path="res://passenger.tscn" id="3_h2yge"]
 
 [sub_resource type="Curve3D" id="Curve3D_ig7tw"]
 closed = true
@@ -10,6 +11,11 @@ _data = {
 "tilts": PackedFloat32Array(0, 0, 0, 0)
 }
 point_count = 4
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_0xm2m"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h2yge"]
+albedo_color = Color(0.32, 0.32, 0.32, 1)
 
 [node name="Main" type="Node2D"]
 
@@ -25,13 +31,19 @@ size = 80.0
 transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, -3, 9, 7)
 
 [node name="Path3D" type="Path3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
 curve = SubResource("Curve3D_ig7tw")
 
 [node name="PathFollow3D" type="PathFollow3D" parent="Path3D"]
-transform = Transform3D(0.609021, 0, -0.793144, 0, 1, 0, 0.793144, 0, 0.609021, -9, 0, -9)
+transform = Transform3D(0.609026, 0, -0.79315, 0, 1, 0, 0.79315, 0, 0.609026, -9, 0, -9)
 script = ExtResource("1_0xm2m")
 
 [node name="Bus" parent="Path3D/PathFollow3D" instance=ExtResource("1_ig7tw")]
 unique_name_in_owner = true
-transform = Transform3D(-5.96046e-08, 0, 1, 0, 1, 0, -1, 0, -5.96046e-08, 0, 0, 0)
+
+[node name="road" type="CSGMesh3D" parent="."]
+transform = Transform3D(29.766, 0, 0, 0, 1.1, 0, 0, 0, 28.5912, 0, 0, 2)
+mesh = SubResource("CylinderMesh_0xm2m")
+material = SubResource("StandardMaterial3D_h2yge")
+
+[node name="Passenger" parent="." instance=ExtResource("3_h2yge")]
+transform = Transform3D(0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, 0.258819, 16, 0, 6)

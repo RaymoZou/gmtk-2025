@@ -11,6 +11,11 @@ signal increase_bus_speed # increases bus speed
 
 func _ready() -> void:
 	money_updated.emit(money)
+	SignalBus.passenger_picked_up.connect(_on_passenger_picked_up)
+	
+func _on_passenger_picked_up(passenger : Passenger):
+	money += Passenger.FARE
+	money_updated.emit(money)
 	
 # 1) increases the speed of the bus
 # 2) deducts money
