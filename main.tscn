@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://v7vywqu30d8u"]
+[gd_scene load_steps=8 format=3 uid="uid://v7vywqu30d8u"]
 
 [ext_resource type="Script" uid="uid://dytohafinj5k7" path="res://scripts/move.gd" id="1_0xm2m"]
+[ext_resource type="PackedScene" uid="uid://bsqmo5gx3u1r8" path="res://camera.tscn" id="1_1bvp3"]
 [ext_resource type="PackedScene" uid="uid://hrrmvxfuv0pg" path="res://bus.tscn" id="1_ig7tw"]
 [ext_resource type="PackedScene" uid="uid://b5cmvjy41uyh2" path="res://passenger.tscn" id="3_h2yge"]
 
@@ -22,10 +23,8 @@ albedo_color = Color(0.32, 0.32, 0.32, 1)
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
 transform = Transform3D(247.684, 0, 0, 0, 1, 0, 0, 0, 225.866, 0, 0, 0)
 
-[node name="Camera3D" type="Camera3D" parent="."]
+[node name="Camera3D" parent="." instance=ExtResource("1_1bvp3")]
 transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 36, 29)
-projection = 1
-size = 80.0
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, -3, 9, 7)
