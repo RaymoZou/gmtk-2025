@@ -1,0 +1,32 @@
+[gd_scene load_steps=2 format=3 uid="uid://crur6ww7sn88h"]
+
+[ext_resource type="Script" uid="uid://re7bcmrgx22k" path="res://scripts/ui.gd" id="1_fyqef"]
+
+[node name="UI" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1150.0
+offset_bottom = 656.0
+script = ExtResource("1_fyqef")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 197.0
+offset_bottom = 329.0
+
+[node name="MoneyLabel" type="RichTextLabel" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "money:"
+fit_content = true
+
+[node name="SpeedLabel" type="RichTextLabel" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "bus speed: "
+fit_content = true
+
+[node name="BusButton" type="Button" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "increase speed"
