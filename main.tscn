@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://v7vywqu30d8u"]
 
-[ext_resource type="Script" path="res://move.gd" id="1_0xm2m"]
+[ext_resource type="Script" uid="uid://dytohafinj5k7" path="res://scripts/move.gd" id="1_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://hrrmvxfuv0pg" path="res://bus.tscn" id="1_ig7tw"]
 
 [sub_resource type="Curve3D" id="Curve3D_ig7tw"]
