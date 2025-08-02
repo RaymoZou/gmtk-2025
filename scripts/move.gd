@@ -1,10 +1,7 @@
 extends PathFollow3D
 
-# progresses children along the parent 3D path 
-
 func move(delta):
-	progress += 4 * delta
-	return
+	progress += $Bus.speed * delta
 	
 func _physics_process(delta: float) -> void:
 	move(delta)
