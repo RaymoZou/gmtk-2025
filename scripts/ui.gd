@@ -28,7 +28,7 @@ func _on_button_down() -> void:
 # TODO: this needs to be called when a signal is emitted
 func _on_money_updated(amount : int):
 	print("ui: updated money with %d" % amount)
-	money_text.text = "money: %d" % amount
+	money_text.text = "Money: [color=yellow]$%d[/color]" % amount
 	
 func _on_satisfaction_updated(amount: int):
-	satisfaction_text.text = "satisfaction level: %d" % amount
+	satisfaction_text.text = "Satisfaction level: %d" % amount
