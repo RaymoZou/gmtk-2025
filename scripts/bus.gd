@@ -3,7 +3,7 @@ extends Node3D
 class_name Bus
 
 const SPEED_INCREMENT : int = 2
-var passenger_count: int
+var passengers: Array[Passenger]
 var speed : int = 8
 
 func _init() -> void:
@@ -21,11 +21,14 @@ func load_passengers() -> void:
 	# 2. Load a random number of passengers
 	#    - Number of passengers should be determined by factors such as satisfaction rating, etc.
 	# 3. Emit signal that passengers have been loaded
-	
-func unload_passengers() -> void:
+
+func unload_passengers(station: Station) -> void:
 	print('Unload passengers')
-	# TODO
-	# 1. Check if bus is in "unloading" state (same as "loading"?)
-	# 2. Check which passengers are getting off at this stop
-	# 3. Invoke Passenger.leave_bus() for each passenger
-	# 4. Emit signal that passengers have been unloaded
+	# Iterate backward to not affect indices
+	for i in range(passengers.size() - 1, -1, -1):
+		var passenger = passengers[i]
+		if station == passenger.target_station:
+			passenger.leave_bus()
+			passengers.remove_at(i)
+
+	# NOTE: Maybe need to emit a signal here that passengers are unloaded
