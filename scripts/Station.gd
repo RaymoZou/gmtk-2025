@@ -24,6 +24,8 @@ func _ready() -> void:
 	var area_node: Area3D = self.get_node("Area3D")
 	area_node.area_entered.connect(_on_area_entered)
 
+# TODO: you can use collision matrices instead to guarantee bus collision
+#		- assume the only collisions that will be happening are bus x station
 func _on_area_entered(area: Area3D) -> void:
 	if area.name == "BusArea":
 		# Drop off passengers first
