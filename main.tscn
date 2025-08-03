@@ -4,6 +4,8 @@
 [ext_resource type="PackedScene" uid="uid://bsqmo5gx3u1r8" path="res://camera.tscn" id="1_1bvp3"]
 [ext_resource type="PackedScene" uid="uid://hrrmvxfuv0pg" path="res://bus.tscn" id="1_ig7tw"]
 [ext_resource type="PackedScene" uid="uid://b5cmvjy41uyh2" path="res://passenger.tscn" id="3_h2yge"]
+[ext_resource type="PackedScene" uid="uid://43qq4is5khe5" path="res://StationLilacLake.tscn" id="4_lquwl"]
+[ext_resource type="Script" uid="uid://dcq3wvntq7iex" path="res://scripts/Station.gd" id="5_7mycd"]
 
 [sub_resource type="Curve3D" id="Curve3D_ig7tw"]
 closed = true
@@ -19,7 +21,6 @@ point_count = 4
 albedo_color = Color(0.32, 0.32, 0.32, 1)
 
 [node name="Main" type="Node2D"]
-script = ExtResource("1_1bvp3")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
 transform = Transform3D(247.684, 0, 0, 0, 1, 0, 0, 0, 225.866, 0, 0, 0)
@@ -45,5 +46,14 @@ transform = Transform3D(29.766, 0, 0, 0, 1.1, 0, 0, 0, 28.5912, 0, 0, 2)
 mesh = SubResource("CylinderMesh_0xm2m")
 material = SubResource("StandardMaterial3D_h2yge")
 
-[node name="Passenger" parent="." instance=ExtResource("3_h2yge")]
-transform = Transform3D(0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, 0.258819, 16, 0, 6)
+[node name="PassengerSpawnTimer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[node name="StationLilacLake" parent="." instance=ExtResource("4_lquwl")]
+transform = Transform3D(0.433643, 0, 0.901085, 0, 1, 0, -0.901085, 0, 0.433643, 13.6661, 4.409, 1.07642)
+script = ExtResource("5_7mycd")
+station_name = "Lilac Lake"
+passenger_scene = ExtResource("3_h2yge")
+
+[connection signal="timeout" from="PassengerSpawnTimer" to="StationLilacLake" method="_on_passenger_spawn_timer_timeout"]
