@@ -16,3 +16,14 @@ unique_name_in_owner = true
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 transform = Transform3D(10, 0, 0, 0, 2.41, 0, 0, 0, 10, 0, 2, 0)
 shape = SubResource("CapsuleShape3D_rejbp")
+
+[node name="SatisfactionTickTimer" type="Timer" parent="."]
+autostart = true
+
+[node name="SatisfactionLabel" type="Label3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(-0.61584, 0, 0.787871, 0, 1, 0, -0.787871, 0, -0.61584, 0, 5.97291, 0)
+pixel_size = 0.025
+text = "50"
+
+[connection signal="timeout" from="SatisfactionTickTimer" to="." method="_on_satisfaction_tick_timer_timeout"]

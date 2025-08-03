@@ -1,11 +1,13 @@
 extends Control
 
 @onready var money_text : RichTextLabel = %MoneyLabel
+@onready var satisfaction_text: RichTextLabel = %SatisfactionLabel
 @onready var bus_button : Button = %BusButton
 @onready var speed_label : RichTextLabel = %SpeedLabel
 
 func _ready() -> void:
 	GameManager.money_updated.connect(_on_money_updated)
+	GameManager.satisfaction_updated.connect(_on_satisfaction_updated)
 	bus_button.button_down.connect(_on_button_down)
 	SignalBus.speed_increased.connect(_on_speed_increased)
 
@@ -20,3 +22,6 @@ func _on_button_down() -> void:
 func _on_money_updated(amount : int):
 	print("ui: updated money with %d" % amount)
 	money_text.text = "money: %d" % amount
+	
+func _on_satisfaction_updated(amount: int):
+	satisfaction_text.text = "satisfaction level: %d" % amount

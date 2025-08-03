@@ -9,6 +9,7 @@ var money: int = STARTING_MONEY
 var satisfaction_rating: int
 
 signal money_updated(amount : int)
+signal satisfaction_updated(amount: int)
 signal increase_bus_speed # increases bus speed
 
 func _ready() -> void:
@@ -19,6 +20,7 @@ func _on_passenger_dropped_off(money: int, satisfaction: int) -> void:
 	self.money += money
 	satisfaction_rating += satisfaction
 	money_updated.emit(self.money)
+	satisfaction_updated.emit(satisfaction_rating)
 	
 # 1) increases the speed of the bus
 # 2) deducts money
