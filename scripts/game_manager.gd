@@ -2,14 +2,16 @@ extends Node
 
 const STARTING_MONEY : int = 100
 const SPEED_COST : int = 50 # how much a speed increment costs
+const SATISFACTION_LEVEL_GOAL: int = 1500
 
 var stations: Array[Station] = []
 
 var money: int = STARTING_MONEY
-var satisfaction_rating: int
+var satisfaction_rating: int = 0
 
 signal money_updated(amount : int)
 signal satisfaction_updated(amount: int)
+signal game_over()
 signal increase_bus_speed # increases bus speed
 
 func _ready() -> void:
@@ -21,7 +23,9 @@ func _on_passenger_dropped_off(fare: int, satisfaction: int) -> void:
 	satisfaction_rating += satisfaction
 	money_updated.emit(money)
 	satisfaction_updated.emit(satisfaction_rating)
-	print(money)
+	
+	if satisfaction_rating >= SATISFACTION_LEVEL_GOAL:
+		game_over.emit()
 	
 # 1) increases the speed of the bus
 # 2) deducts money

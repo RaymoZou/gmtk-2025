@@ -9,9 +9,9 @@ extends Control
 func _ready() -> void:
 	GameManager.money_updated.connect(_on_money_updated)
 	GameManager.satisfaction_updated.connect(_on_satisfaction_updated)
+	GameManager.game_over.connect(_on_game_over)
 	bus_button.button_down.connect(_on_button_down)
 	SignalBus.speed_increased.connect(_on_speed_increased)
-	#SignalBus.passenger_dropped_off(money: int, satisfaction: int)
 	SignalBus.passenger_dropped_off.connect(_on_passenger_dropped_off)
 	
 func _on_passenger_dropped_off(_money : int, satisfaction: int):
@@ -28,7 +28,11 @@ func _on_button_down() -> void:
 # TODO: this needs to be called when a signal is emitted
 func _on_money_updated(amount : int):
 	print("ui: updated money with %d" % amount)
-	money_text.text = "money: %d" % amount
+	money_text.text = "Money: $%d" % amount
 	
 func _on_satisfaction_updated(amount: int):
-	satisfaction_text.text = "satisfaction level: %d" % amount
+	satisfaction_text.text = "Satisfaction level: %d" % amount
+	
+func _on_game_over():
+	get_node("VBoxContainer").visible = false
+	get_node("GameOver").visible = true
