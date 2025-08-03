@@ -32,5 +32,3 @@ func _on_money_updated(amount : int):
 	
 func _on_satisfaction_updated(amount: int):
 	satisfaction_text.text = "satisfaction level: %d" % amount
-	#print("ui: updated money with %d" % amount)
-	money_text.text = "Money: $%d" % amount

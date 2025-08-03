@@ -16,11 +16,12 @@ func _ready() -> void:
 	money_updated.emit(money)
 	SignalBus.passenger_dropped_off.connect(_on_passenger_dropped_off)
 	
-func _on_passenger_dropped_off(money: int, satisfaction: int) -> void:
-	self.money += money
+func _on_passenger_dropped_off(fare: int, satisfaction: int) -> void:
+	money += fare
 	satisfaction_rating += satisfaction
-	money_updated.emit(self.money)
+	money_updated.emit(money)
 	satisfaction_updated.emit(satisfaction_rating)
+	print(money)
 	
 # 1) increases the speed of the bus
 # 2) deducts money
