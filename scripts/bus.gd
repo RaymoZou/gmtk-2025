@@ -4,7 +4,7 @@ class_name Bus
 
 const SPEED_INCREMENT : int = 2
 var passengers: Array[Passenger]
-var speed : int = 8
+var speed : int = 50
 
 @onready var audio_stream_player_3d : AudioStreamPlayer3D = %AudioStreamPlayer3D
 
