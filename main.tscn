@@ -3,28 +3,18 @@
 [ext_resource type="Script" path="res://scripts/move.gd" id="1_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://bsqmo5gx3u1r8" path="res://camera.tscn" id="1_1bvp3"]
 [ext_resource type="PackedScene" uid="uid://hrrmvxfuv0pg" path="res://bus.tscn" id="1_ig7tw"]
+[ext_resource type="Curve3D" uid="uid://ddkatqn4ao68i" path="res://curve0.tres" id="2_kek77"]
+[ext_resource type="PackedScene" uid="uid://d2xs4oddms7mq" path="res://loop0.tscn" id="3_5vw27"]
 [ext_resource type="PackedScene" uid="uid://b5cmvjy41uyh2" path="res://passenger.tscn" id="3_h2yge"]
 [ext_resource type="PackedScene" uid="uid://43qq4is5khe5" path="res://StationLilacLake.tscn" id="4_lquwl"]
 [ext_resource type="Script" uid="uid://dcq3wvntq7iex" path="res://scripts/Station.gd" id="5_7mycd"]
-[ext_resource type="PackedScene" uid="uid://ctu4j2w0lvqkj" path="res://StationToffeeTown.tscn" id="7_272bh"]
-
-[sub_resource type="Curve3D" id="Curve3D_ig7tw"]
-closed = true
-_data = {
-"points": PackedVector3Array(-5.6, 0, 4.3, 5.6, 0, -4.3, -9, 0, -9, -6, 0, -5.2, 6, 0, 5.2, 9.4775, 0, -7.72684, 6.9, 0, -4.9, -6.9, 0, 4.9, 9.88624, 0, 9.88988, 9.6, 0, 6.5, -9.6, 0, -6.5, -8.10118, 0, 10.2986),
-"tilts": PackedFloat32Array(0, 0, 0, 0)
-}
-point_count = 4
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_0xm2m"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h2yge"]
-albedo_color = Color(0.32, 0.32, 0.32, 1)
+[ext_resource type="PackedScene" uid="uid://irdt2436v4j2" path="res://loop1.tscn" id="7_272bh"]
+[ext_resource type="PackedScene" uid="uid://ctu4j2w0lvqkj" path="res://StationToffeeTown.tscn" id="10_4c57u"]
 
 [node name="Main" type="Node2D"]
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
-transform = Transform3D(247.684, 0, 0, 0, 1, 0, 0, 0, 225.866, 0, 0, 0)
+transform = Transform3D(247.684, 0, 0, 0, 1, 0, 0, 0, 225.866, 0, -2, 0)
 
 [node name="Camera3D" parent="." instance=ExtResource("1_1bvp3")]
 transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 36, 29)
@@ -33,19 +23,19 @@ transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 
 transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, -3, 9, 7)
 
 [node name="Path3D" type="Path3D" parent="."]
-curve = SubResource("Curve3D_ig7tw")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -21)
+curve = ExtResource("2_kek77")
 
 [node name="PathFollow3D" type="PathFollow3D" parent="Path3D"]
-transform = Transform3D(0.609026, 0, -0.79315, 0, 1, 0, 0.79315, 0, 0.609026, -9, 0, -9)
+transform = Transform3D(0.495956, 0, -0.868342, 0, 1, 0, 0.868342, 0, 0.495956, -49.5031, 0, -42.58)
 script = ExtResource("1_0xm2m")
 
 [node name="Bus" parent="Path3D/PathFollow3D" instance=ExtResource("1_ig7tw")]
 unique_name_in_owner = true
 
-[node name="road" type="CSGMesh3D" parent="."]
-transform = Transform3D(29.766, 0, 0, 0, 1.1, 0, 0, 0, 28.5912, 0, 0, 2)
-mesh = SubResource("CylinderMesh_0xm2m")
-material = SubResource("StandardMaterial3D_h2yge")
+[node name="LoopMap0" parent="Path3D" instance=ExtResource("3_5vw27")]
+
+[node name="LoopMap1" parent="Path3D" instance=ExtResource("7_272bh")]
 
 [node name="PassengerSpawnTimer" type="Timer" parent="."]
 wait_time = 2.0
@@ -53,15 +43,14 @@ autostart = true
 
 [node name="StationLilacLake" parent="." instance=ExtResource("4_lquwl")]
 unique_name_in_owner = true
-transform = Transform3D(0.433643, 0, 0.901085, 0, 1, 0, -0.901085, 0, 0.433643, 12.347, 1.51717, 2.95358)
+transform = Transform3D(-0.755808, 0, -0.654794, 0, 1, 0, 0.654794, 0, -0.755808, 16.2946, 0.957167, 22.6094)
 script = ExtResource("5_7mycd")
 station_name = "Lilac Lake"
 passenger_scene = ExtResource("3_h2yge")
 
-[node name="StationToffeeTown" parent="." instance=ExtResource("7_272bh")]
+[node name="StationToffeeTown" parent="." instance=ExtResource("10_4c57u")]
 unique_name_in_owner = true
-transform = Transform3D(-0.269979, -2.89639e-09, -0.962866, -1.53991e-09, 1, -2.57631e-09, 0.962866, 7.87174e-10, -0.269979, -12.4004, 1.51717, 3.15168)
+transform = Transform3D(0.5638, 0, 0.825911, 0, 1, 0, -0.825911, 0, 0.5638, -44.3414, 0.957167, -66.4943)
 script = ExtResource("5_7mycd")
-passenger_scene = ExtResource("3_h2yge")
 
 [connection signal="timeout" from="PassengerSpawnTimer" to="StationLilacLake" method="spawn_passengers"]
