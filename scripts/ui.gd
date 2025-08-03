@@ -28,11 +28,12 @@ func _on_button_down() -> void:
 # TODO: this needs to be called when a signal is emitted
 func _on_money_updated(amount : int):
 	print("ui: updated money with %d" % amount)
-	money_text.text = "Money: $%d" % amount
-	
+	money_text.text = "Money: [color=yellow]$%d[/color]" % amount
+
 func _on_satisfaction_updated(amount: int):
 	satisfaction_text.text = "Satisfaction level: %d" % amount
 	
 func _on_game_over():
 	get_node("VBoxContainer").visible = false
 	get_node("GameOver").visible = true
+	
