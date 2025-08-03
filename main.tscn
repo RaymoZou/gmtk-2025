@@ -36,6 +36,7 @@ unique_name_in_owner = true
 [node name="LoopMap0" parent="Path3D" instance=ExtResource("3_5vw27")]
 
 [node name="LoopMap1" parent="Path3D" instance=ExtResource("7_272bh")]
+visible = false
 
 [node name="PassengerSpawnTimer" type="Timer" parent="."]
 wait_time = 2.0

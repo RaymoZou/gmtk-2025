@@ -1,7 +1,7 @@
 extends Node
 
-const STARTING_MONEY : int = 200
-const SPEED_COST : int = 10 # how much a speed increment costs
+const STARTING_MONEY : int = 100
+const SPEED_COST : int = 50 # how much a speed increment costs
 
 var stations: Array[Station] = []
 

@@ -4,7 +4,9 @@ class_name Bus
 
 const SPEED_INCREMENT : int = 2
 var passengers: Array[Passenger]
-var speed : int = 8
+var speed : int = 50
+
+@onready var audio_stream_player_3d : AudioStreamPlayer3D = %AudioStreamPlayer3D
 
 func _init() -> void:
 	print("bus initialized")
@@ -19,11 +21,10 @@ func load_passengers(new_passengers: Array[Passenger]) -> void:
 	self.passengers.append_array(new_passengers)
 	for p in new_passengers:
 		p.board_bus()
+	audio_stream_player_3d.play()
 
 func unload_passengers(station: Station) -> void:
 	var passengers_to_unload = passengers.filter(func(p): return p.target_station == station)
-	if len(passengers_to_unload) == 0:
-		return
 	print_debug("Unloading %s passengers at %s" % [len(passengers_to_unload), station])
 	for i in range(passengers_to_unload.size() - 1, -1, -1):
 		var passenger = passengers_to_unload[i]
