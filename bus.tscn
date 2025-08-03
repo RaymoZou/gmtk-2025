@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://hrrmvxfuv0pg"]
 
 [ext_resource type="Script" uid="uid://csg26o78oqg38" path="res://scripts/bus.gd" id="1_n5sl8"]
-[ext_resource type="PackedScene" uid="uid://brngobxxbtvx2" path="res://assets/bus.glb" id="2_ff36x"]
+[ext_resource type="PackedScene" uid="uid://cvyk61asfel4d" path="res://assets/bus.glb" id="2_ff36x"]
 [ext_resource type="AudioStream" uid="uid://y2pe2ftcvci" path="res://assets/passenger_load.mp3" id="3_ff36x"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_n5sl8"]
@@ -10,7 +10,7 @@ size = Vector3(1, 1, 1.12219)
 [node name="bus" type="Node3D"]
 script = ExtResource("1_n5sl8")
 
-[node name="bus" parent="." instance=ExtResource("2_ff36x")]
+[node name="model" parent="." instance=ExtResource("2_ff36x")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 
 [node name="BusArea" type="Area3D" parent="."]
