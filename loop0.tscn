@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://d2xs4oddms7mq"]
+
+[ext_resource type="PackedScene" uid="uid://wb2rjs1bk064" path="res://assets/loop0.glb" id="1_4ygdl"]
+
+[node name="LoopMap0" type="Node3D"]
+
+[node name="loop0" parent="." instance=ExtResource("1_4ygdl")]
