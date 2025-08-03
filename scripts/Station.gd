@@ -2,8 +2,6 @@ extends Node
 
 class_name Station
 
-@onready var passenger_spawn_timer: Timer = $PassengerSpawnTimer
-
 @export var station_name: String
 @export var passenger_scene: PackedScene
 var passengers: Array[Passenger]
@@ -33,6 +31,8 @@ func _on_area_entered(area: Area3D) -> void:
 		# Then load passengers
 		if len(passengers):
 			%Bus.load_passengers(passengers)
+			for passenger in passengers:
+				self.remove_child(passenger)
 			passengers.clear()
 		
 func spawn_passengers():
