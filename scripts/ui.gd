@@ -10,7 +10,7 @@ func _ready() -> void:
 	SignalBus.speed_increased.connect(_on_speed_increased)
 
 func _on_speed_increased(speed : int):
-	speed_label.text = "bus speed: %d" % speed
+	speed_label.text = "bus speed: %d MPH" % speed
 	print("ui: bus speed is now %d!" % speed)
 	
 func _on_button_down() -> void:
