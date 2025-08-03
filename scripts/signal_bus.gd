@@ -1,4 +1,4 @@
 extends Node
 
 signal speed_increased(speed : int)
-signal passenger_picked_up(passenger : Passenger)
+signal passenger_dropped_off(money: int, satisfaction: int)

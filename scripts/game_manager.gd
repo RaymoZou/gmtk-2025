@@ -3,6 +3,8 @@ extends Node
 const STARTING_MONEY : int = 200
 const SPEED_COST : int = 10 # how much a speed increment costs
 
+var stations: Array[Station] = []
+
 var money: int = STARTING_MONEY
 var satisfaction_rating: int
 
@@ -11,11 +13,12 @@ signal increase_bus_speed # increases bus speed
 
 func _ready() -> void:
 	money_updated.emit(money)
-	SignalBus.passenger_picked_up.connect(_on_passenger_picked_up)
+	SignalBus.passenger_dropped_off.connect(_on_passenger_dropped_off)
 	
-func _on_passenger_picked_up(passenger : Passenger):
-	money += Passenger.FARE
-	money_updated.emit(money)
+func _on_passenger_dropped_off(money: int, satisfaction: int) -> void:
+	self.money += money
+	satisfaction_rating += satisfaction
+	money_updated.emit(self.money)
 	
 # 1) increases the speed of the bus
 # 2) deducts money

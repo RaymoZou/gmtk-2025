@@ -1,11 +1,12 @@
-[gd_scene load_steps=8 format=3 uid="uid://v7vywqu30d8u"]
+[gd_scene load_steps=11 format=3 uid="uid://v7vywqu30d8u"]
 
-[ext_resource type="Script" uid="uid://dytohafinj5k7" path="res://scripts/move.gd" id="1_0xm2m"]
+[ext_resource type="Script" path="res://scripts/move.gd" id="1_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://bsqmo5gx3u1r8" path="res://camera.tscn" id="1_1bvp3"]
 [ext_resource type="PackedScene" uid="uid://hrrmvxfuv0pg" path="res://bus.tscn" id="1_ig7tw"]
 [ext_resource type="PackedScene" uid="uid://b5cmvjy41uyh2" path="res://passenger.tscn" id="3_h2yge"]
 [ext_resource type="PackedScene" uid="uid://43qq4is5khe5" path="res://StationLilacLake.tscn" id="4_lquwl"]
 [ext_resource type="Script" uid="uid://dcq3wvntq7iex" path="res://scripts/Station.gd" id="5_7mycd"]
+[ext_resource type="PackedScene" uid="uid://ctu4j2w0lvqkj" path="res://StationToffeeTown.tscn" id="7_272bh"]
 
 [sub_resource type="Curve3D" id="Curve3D_ig7tw"]
 closed = true
@@ -51,9 +52,16 @@ wait_time = 2.0
 autostart = true
 
 [node name="StationLilacLake" parent="." instance=ExtResource("4_lquwl")]
-transform = Transform3D(0.433643, 0, 0.901085, 0, 1, 0, -0.901085, 0, 0.433643, 13.6661, 4.409, 1.07642)
+unique_name_in_owner = true
+transform = Transform3D(0.433643, 0, 0.901085, 0, 1, 0, -0.901085, 0, 0.433643, 12.347, 1.51717, 2.95358)
 script = ExtResource("5_7mycd")
 station_name = "Lilac Lake"
 passenger_scene = ExtResource("3_h2yge")
 
-[connection signal="timeout" from="PassengerSpawnTimer" to="StationLilacLake" method="_on_passenger_spawn_timer_timeout"]
+[node name="StationToffeeTown" parent="." instance=ExtResource("7_272bh")]
+unique_name_in_owner = true
+transform = Transform3D(-0.269979, -2.89639e-09, -0.962866, -1.53991e-09, 1, -2.57631e-09, 0.962866, 7.87174e-10, -0.269979, -12.4004, 1.51717, 3.15168)
+script = ExtResource("5_7mycd")
+passenger_scene = ExtResource("3_h2yge")
+
+[connection signal="timeout" from="PassengerSpawnTimer" to="StationLilacLake" method="spawn_passengers"]
