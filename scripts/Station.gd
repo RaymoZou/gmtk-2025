@@ -5,6 +5,7 @@ class_name Station
 @export var station_name: String
 @export var passenger_scene: PackedScene
 const INITIAL_CAPACITY: int = 6 # Initial number of passengers at the station
+const SPAWN_TIME: float = 2.0 # Time between passenger spawns
 var curr_capacity: int
 var passengers: Array[Passenger]
 var spawn_point: Vector3
@@ -17,6 +18,10 @@ func _ready() -> void:
 	# Regsiter station with GameManager
 	GameManager.stations.append(self)
 	curr_capacity = INITIAL_CAPACITY
+	%Timer.autostart = true
+	%Timer.wait_time = SPAWN_TIME
+	%Timer.timeout.connect(spawn_passengers)
+	%Timer.start()
 	
 	# TODO: Maybe change this to use the station node position
 	var collision_node: CollisionShape3D = self.get_node("Area3D/CollisionShape3D")
@@ -41,6 +46,7 @@ func _on_area_entered(area: Area3D) -> void:
 			passengers.clear()
 		
 # spawns a passenger at station with random target station that is NOT itself
+# NOTE: there has to be at least 2 other stations in the main scene otherwise all_other_stations will be empty
 func spawn_passengers():
 	if passengers.size() >= curr_capacity:
 		print_debug("Station %s is at full capacity." % station_name)
