@@ -1,11 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://43qq4is5khe5"]
+[gd_scene load_steps=5 format=3 uid="uid://43qq4is5khe5"]
 
 [ext_resource type="PackedScene" uid="uid://gw4dxcgbyns3" path="res://assets/station.glb" id="1_b2okk"]
+[ext_resource type="Script" uid="uid://dcq3wvntq7iex" path="res://scripts/Station.gd" id="1_j74gr"]
+[ext_resource type="PackedScene" uid="uid://b5cmvjy41uyh2" path="res://passenger.tscn" id="2_nwy1y"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_j74gr"]
 size = Vector3(20, 10, 10)
 
 [node name="StationLilacLake" type="Node3D"]
+script = ExtResource("1_j74gr")
+passenger_scene = ExtResource("2_nwy1y")
 
 [node name="Area3D" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.306397, 0.813954, -0.839338)
