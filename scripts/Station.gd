@@ -32,18 +32,18 @@ func _ready() -> void:
 	var area_node: Area3D = self.get_node("Area3D")
 	area_node.area_entered.connect(_on_area_entered)
 
-# TODO: you can use collision matrices instead to guarantee bus collision
-#		- assume the only collisions that will be happening are bus x station
-func _on_area_entered(area: Area3D) -> void:
-	if area.name == "BusArea":
-		# Drop off passengers first
-		%Bus.unload_passengers(self)
-		# Then load passengers
-		if len(passengers):
-			%Bus.load_passengers(passengers)
-			for passenger in passengers:
-				self.remove_child(passenger)
-			passengers.clear()
+# NOTE: assume only Bus collisions
+# 1) unloads current passengers
+# 2) loads new passengers
+func _on_area_entered(bus: Area3D) -> void:
+	# Drop off passengers first
+	bus.unload_passengers(self)
+	# Then load passengers
+	if len(passengers):
+		bus.load_passengers(passengers)
+		for passenger in passengers:
+			self.remove_child(passenger)
+		passengers.clear()
 		
 # spawns a passenger at station with random target station that is NOT itself
 # NOTE: there has to be at least 2 other stations in the main scene otherwise all_other_stations will be empty
