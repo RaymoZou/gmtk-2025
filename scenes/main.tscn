@@ -1,0 +1,43 @@
+[gd_scene load_steps=8 format=3 uid="uid://v7vywqu30d8u"]
+
+[ext_resource type="Script" uid="uid://dytohafinj5k7" path="res://scripts/move.gd" id="1_0xm2m"]
+[ext_resource type="PackedScene" uid="uid://bsqmo5gx3u1r8" path="res://scenes/camera.tscn" id="1_1bvp3"]
+[ext_resource type="PackedScene" uid="uid://hrrmvxfuv0pg" path="res://scenes/bus.tscn" id="1_ig7tw"]
+[ext_resource type="Curve3D" uid="uid://ddkatqn4ao68i" path="res://curve0.tres" id="2_kek77"]
+[ext_resource type="PackedScene" uid="uid://d2xs4oddms7mq" path="res://scenes/loop0.tscn" id="3_5vw27"]
+[ext_resource type="PackedScene" uid="uid://43qq4is5khe5" path="res://scenes/Station.tscn" id="7_5vw27"]
+[ext_resource type="PackedScene" uid="uid://irdt2436v4j2" path="res://scenes/loop1.tscn" id="7_272bh"]
+
+[node name="Main" type="Node2D"]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(247.684, 0, 0, 0, 1, 0, 0, 0, 225.866, 0, -2, 0)
+
+[node name="Camera3D" parent="." instance=ExtResource("1_1bvp3")]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 36, 29)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, -3, 9, 7)
+
+[node name="Path3D" type="Path3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -21)
+curve = ExtResource("2_kek77")
+
+[node name="PathFollow3D" type="PathFollow3D" parent="Path3D"]
+transform = Transform3D(0.495956, 0, -0.868342, 0, 1, 0, 0.868342, 0, 0.495956, -49.5031, 0, -42.58)
+script = ExtResource("1_0xm2m")
+
+[node name="Bus" parent="Path3D/PathFollow3D" instance=ExtResource("1_ig7tw")]
+unique_name_in_owner = true
+
+[node name="LoopMap0" parent="Path3D" instance=ExtResource("3_5vw27")]
+
+[node name="LoopMap1" parent="Path3D" instance=ExtResource("7_272bh")]
+visible = false
+
+[node name="LilacLakeStation" parent="." instance=ExtResource("7_5vw27")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26, 0, 29)
+station_name = "LilacLake"
+
+[node name="ToffeeTownStation" parent="." instance=ExtResource("7_5vw27")]
+transform = Transform3D(-0.5, 0, -0.866026, 0, 1, 0, 0.866026, 0, -0.5, -59.9, 0, -51.8)
