@@ -1,4 +1,4 @@
-extends Node3D
+extends Area3D
 
 class_name Bus
 
@@ -7,10 +7,25 @@ var passengers: Array[Passenger]
 var speed : int = 20
 
 @onready var audio_stream_player_3d : AudioStreamPlayer3D = %AudioStreamPlayer3D
+@export var highlight_mat : Resource
+@onready var mesh : MeshInstance3D = $bus/Cube
+
+signal bus_selected(bus : Bus)
 
 func _init() -> void:
 	print("bus initialized")
+	if highlight_mat == null:
+		print_debug("need a highlight material!")
 	GameManager.increase_bus_speed.connect(_on_increase_bus_speed)
+	input_event.connect(_on_input_event)
+	
+func _on_input_event(camera: Node, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int):
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+			print("bus: %s" % self)
+			print("camera: %s" % camera)
+			mesh.material_overlay = highlight_mat
+			bus_selected.emit(self)
 	
 func _on_increase_bus_speed():
 	speed += SPEED_INCREMENT
