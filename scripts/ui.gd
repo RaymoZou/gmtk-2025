@@ -15,9 +15,20 @@ func _ready() -> void:
 	SignalBus.passenger_dropped_off.connect(_on_passenger_dropped_off)
 	SignalBus.selected.connect(_on_selected)
 	
+func render_station_info(station : Station):
+	# TODO:
+	pass
+	
+func render_bus_info(bus : Bus):
+	print("%d / %d" % [bus.passengers.size(), bus.capacity])
+	print("Speed: %s" % bus.speed)
+	
 
 func _on_selected(object : Node):
-	print(object)
+	if object is Station:
+		render_station_info(object as Station)
+	elif object is Bus:
+		render_bus_info(object as Bus)
 	
 func _on_passenger_dropped_off(_money : int, satisfaction: int):
 	print_debug("satisfaction: %d" % satisfaction)

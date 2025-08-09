@@ -50,16 +50,18 @@ func _on_selected(object: Node):
 
 # NOTE: assume only Bus collisions
 # 1) unloads current passengers
-# 2) loads new passengers
+# 2) loads new passengers based on available space of bus
 func _on_area_entered(bus: Area3D) -> void:
 	# Drop off passengers first
 	bus.unload_passengers(self)
 	# Then load passengers
-	if len(passengers):
-		bus.load_passengers(passengers)
-		for passenger in passengers:
-			self.remove_child(passenger)
-		passengers.clear()
+	var available_space : int = bus.capacity - bus.passengers.size()
+	for i in available_space:
+		var p : Passenger = passengers.pop_front()
+		print_debug("loading passenger: %s" % p)
+		p.board_bus()
+		remove_child(p)
+		bus.load_passenger(p)
 		
 # spawns a passenger at station with random target station that is NOT itself
 # NOTE: there has to be at least 2 other stations in the main scene otherwise all_other_stations will be empty
