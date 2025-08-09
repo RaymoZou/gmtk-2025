@@ -13,6 +13,11 @@ func _ready() -> void:
 	bus_button.button_down.connect(_on_button_down)
 	SignalBus.speed_increased.connect(_on_speed_increased)
 	SignalBus.passenger_dropped_off.connect(_on_passenger_dropped_off)
+	SignalBus.selected.connect(_on_selected)
+	
+
+func _on_selected(object : Node):
+	print(object)
 	
 func _on_passenger_dropped_off(_money : int, satisfaction: int):
 	print_debug("satisfaction: %d" % satisfaction)

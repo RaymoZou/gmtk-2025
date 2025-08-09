@@ -8,10 +8,11 @@ var stations: Array[Station] = []
 
 var money: int = STARTING_MONEY
 var satisfaction_rating: int = 0
+@export var selected: Node # currently selected item (bus, station, etc.)
 
 signal money_updated(amount : int)
 signal satisfaction_updated(amount: int)
-signal game_over()
+signal game_over
 signal increase_bus_speed # increases bus speed
 
 func _ready() -> void:
@@ -26,6 +27,11 @@ func _on_passenger_dropped_off(fare: int, satisfaction: int) -> void:
 	
 	if satisfaction_rating >= SATISFACTION_LEVEL_GOAL:
 		game_over.emit()
+		
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+			SignalBus.selected.emit(null)
 	
 # 1) increases the speed of the bus
 # 2) deducts money
