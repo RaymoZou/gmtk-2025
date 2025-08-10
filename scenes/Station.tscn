@@ -15,6 +15,7 @@ highlight_mat = ExtResource("3_47i8t")
 
 [node name="Area3D" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.306397, 0.813954, -0.839338)
+collision_layer = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 shape = SubResource("BoxShape3D_j74gr")

@@ -42,6 +42,11 @@ func _on_input_event(_camera: Node, event: InputEvent, _event_position: Vector3,
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			mesh.material_overlay = highlight_mat
 			SignalBus.selected.emit(self)
+
+func update_capacity():
+	# TODO:
+	print("updating capacity")
+	pass
 	
 # TODO: this is copy and paste from bus.gd - refactor into own scene
 func _on_selected(object: Node):
@@ -50,13 +55,12 @@ func _on_selected(object: Node):
 
 # NOTE: assume only Bus collisions
 # 1) unloads current passengers
-# 2) loads new passengers based on available space of bus
+# 2) loads new passengers based on available space of bus 
 func _on_area_entered(bus: Area3D) -> void:
-	# Drop off passengers first
 	bus.unload_passengers(self)
-	# Then load passengers
 	var available_space : int = bus.capacity - bus.passengers.size()
-	for i in available_space:
+	var passengers_to_load : int = min(available_space, passengers.size())
+	for i in passengers_to_load:
 		var p : Passenger = passengers.pop_front()
 		print_debug("loading passenger: %s" % p)
 		p.board_bus()

@@ -9,6 +9,7 @@
 size = Vector3(1, 1, 1.12219)
 
 [node name="Bus" type="Area3D"]
+collision_mask = 2
 script = ExtResource("1_n5sl8")
 highlight_mat = ExtResource("2_38u8m")
 

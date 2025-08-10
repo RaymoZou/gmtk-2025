@@ -2,20 +2,20 @@ extends Area3D
 
 class_name Bus
 
-const SPEED_INCREMENT : int = 2
+const SPEED_INCREMENT: int = 2
+const SPEED_COST : int = 50 # how much a speed increment costs
 var passengers: Array[Passenger]
-var speed : int = 20
-var capacity : int = 3
+var speed: int = 20
+var capacity: int = 3
 
-@onready var audio_stream_player_3d : AudioStreamPlayer3D = %AudioStreamPlayer3D
-@export var highlight_mat : Resource
-@onready var mesh : MeshInstance3D = $bus/Cube
+@onready var audio_stream_player_3d: AudioStreamPlayer3D = %AudioStreamPlayer3D
+@export var highlight_mat: Resource
+@onready var mesh: MeshInstance3D = $bus/Cube
 
 func _init() -> void:
 	print("bus initialized")
 	if highlight_mat == null:
 		print_debug("need a highlight material!")
-	GameManager.increase_bus_speed.connect(_on_increase_bus_speed)
 	SignalBus.selected.connect(_on_selected)
 	input_event.connect(_on_input_event)
 	
@@ -24,7 +24,7 @@ func _init() -> void:
 	passengers.resize(capacity)
 	passengers.clear()
 	
-func _on_selected(object : Node):
+func _on_selected(object: Node):
 	if object != self:
 		mesh.material_overlay = null
 	
@@ -33,14 +33,26 @@ func _on_input_event(_camera: Node, event: InputEvent, _event_position: Vector3,
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			mesh.material_overlay = highlight_mat
 			SignalBus.selected.emit(self)
-			
+
+# TODO:
+func increase_capacity():
+	pass
+
 	
-func _on_increase_bus_speed():
-	speed += SPEED_INCREMENT
-	SignalBus.speed_increased.emit(speed)
+# 1) increases the speed of the bus
+# 2) deducts money
+# 3) tells alls listeners of money_updated that money has been updated - useful
+#	 for ui updates
+func increase_speed():
+	if GameManager.money >= SPEED_COST:
+		speed += SPEED_INCREMENT
+		GameManager.money -= SPEED_COST
+		SignalBus.speed_increased.emit(self)
+	else:
+		print("Not enough money to increase speed.")
 
 # station.gd handles the passenger loading - just play sfx
-func load_passenger(p : Passenger) -> void:
+func load_passenger(p: Passenger) -> void:
 	audio_stream_player_3d.play()
 	passengers.push_back(p)
 
