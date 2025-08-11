@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://43qq4is5khe5"]
+[gd_scene load_steps=6 format=3 uid="uid://43qq4is5khe5"]
 
 [ext_resource type="PackedScene" uid="uid://gw4dxcgbyns3" path="res://assets/station.glb" id="1_b2okk"]
 [ext_resource type="Script" uid="uid://dcq3wvntq7iex" path="res://scripts/Station.gd" id="1_j74gr"]
 [ext_resource type="PackedScene" uid="uid://b5cmvjy41uyh2" path="res://scenes/passenger.tscn" id="2_nwy1y"]
+[ext_resource type="Material" uid="uid://bmpepxyc2dowt" path="res://assets/highlighted_mat.tres" id="3_47i8t"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_j74gr"]
 size = Vector3(20, 10, 10)
@@ -10,9 +11,11 @@ size = Vector3(20, 10, 10)
 [node name="Station" type="Node3D"]
 script = ExtResource("1_j74gr")
 passenger_scene = ExtResource("2_nwy1y")
+highlight_mat = ExtResource("3_47i8t")
 
 [node name="Area3D" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.306397, 0.813954, -0.839338)
+collision_layer = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 shape = SubResource("BoxShape3D_j74gr")
@@ -22,3 +25,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.0717, 0, 3.22191)
 
 [node name="Timer" type="Timer" parent="."]
 unique_name_in_owner = true
+
+[editable path="model"]

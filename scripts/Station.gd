@@ -9,6 +9,8 @@ const SPAWN_TIME: float = 2.0 # Time between passenger spawns
 var curr_capacity: int
 var passengers: Array[Passenger]
 var spawn_point: Vector3
+@onready var mesh : MeshInstance3D = $model/Cube
+@export var highlight_mat : Resource
 
 func _init() -> void:
 	print('Created another station')
@@ -17,6 +19,7 @@ func _init() -> void:
 func _ready() -> void:
 	# Regsiter station with GameManager
 	GameManager.stations.append(self)
+	SignalBus.selected.connect(_on_selected)
 	curr_capacity = INITIAL_CAPACITY
 	%Timer.autostart = true
 	%Timer.wait_time = SPAWN_TIME
@@ -31,19 +34,38 @@ func _ready() -> void:
 	# Set up area collision detection
 	var area_node: Area3D = self.get_node("Area3D")
 	area_node.area_entered.connect(_on_area_entered)
+	var area3d : Area3D = $Area3D
+	area3d.input_event.connect(_on_input_event)
+	
+func _on_input_event(_camera: Node, event: InputEvent, _event_position: Vector3, _normal: Vector3, _shape_idx: int):
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+			mesh.material_overlay = highlight_mat
+			SignalBus.selected.emit(self)
+
+func update_capacity():
+	# TODO:
+	print("updating capacity")
+	pass
+	
+# TODO: this is copy and paste from bus.gd - refactor into own scene
+func _on_selected(object: Node):
+	if object != self:
+		mesh.material_overlay = null
 
 # NOTE: assume only Bus collisions
 # 1) unloads current passengers
-# 2) loads new passengers
+# 2) loads new passengers based on available space of bus 
 func _on_area_entered(bus: Area3D) -> void:
-	# Drop off passengers first
 	bus.unload_passengers(self)
-	# Then load passengers
-	if len(passengers):
-		bus.load_passengers(passengers)
-		for passenger in passengers:
-			self.remove_child(passenger)
-		passengers.clear()
+	var available_space : int = bus.capacity - bus.passengers.size()
+	var passengers_to_load : int = min(available_space, passengers.size())
+	for i in passengers_to_load:
+		var p : Passenger = passengers.pop_front()
+		print_debug("loading passenger: %s" % p)
+		p.board_bus()
+		remove_child(p)
+		bus.load_passenger(p)
 		
 # spawns a passenger at station with random target station that is NOT itself
 # NOTE: there has to be at least 2 other stations in the main scene otherwise all_other_stations will be empty

@@ -1,27 +1,66 @@
-extends Node3D
+extends Area3D
 
 class_name Bus
 
-const SPEED_INCREMENT : int = 2
+const SPEED_INCREMENT: int = 2 # how much to increase speed by
+const CAPACITY_INCREMENT: int = 1 # how much to increase capacity by
+const SPEED_COST : int = 50 # how much a speed increment costs
+const CAPACITY_COST: int = 150 # how much a capacity increment costs
 var passengers: Array[Passenger]
-var speed : int = 20
+var speed: int = 20
+var capacity: int = 3
 
-@onready var audio_stream_player_3d : AudioStreamPlayer3D = %AudioStreamPlayer3D
+@onready var audio_stream_player_3d: AudioStreamPlayer3D = %AudioStreamPlayer3D
+@export var highlight_mat: Resource
+@onready var mesh: MeshInstance3D = $bus/Cube
 
 func _init() -> void:
 	print("bus initialized")
-	GameManager.increase_bus_speed.connect(_on_increase_bus_speed)
+	if highlight_mat == null:
+		print_debug("need a highlight material!")
+	SignalBus.selected.connect(_on_selected)
+	input_event.connect(_on_input_event)
 	
-func _on_increase_bus_speed():
-	speed += SPEED_INCREMENT
-	SignalBus.speed_increased.emit(speed)
+	# NOTE: not sure if there's a better way of doing this but i'm just trying to initialize 
+	#		passengers to be size capacity but empty
+	passengers.resize(capacity)
+	passengers.clear()
+	
+func _on_selected(object: Node):
+	if object != self:
+		mesh.material_overlay = null
+	
+func _on_input_event(_camera: Node, event: InputEvent, _event_position: Vector3, _normal: Vector3, _shape_idx: int):
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+			mesh.material_overlay = highlight_mat
+			SignalBus.selected.emit(self)
 
-func load_passengers(new_passengers: Array[Passenger]) -> void:
-	print_debug("Loading %s passengers at %s" % [len(new_passengers), new_passengers[0].origin_station])
-	self.passengers.append_array(new_passengers)
-	for p in new_passengers:
-		p.board_bus()
+# TODO:
+func increase_capacity():
+	if GameManager.money >= CAPACITY_COST:
+		capacity += CAPACITY_INCREMENT
+		GameManager.money -= CAPACITY_COST
+		SignalBus.capacity_increased.emit(self)
+	else:
+		print("Not enough money to increase capacity.")
+
+# 1) increases the speed of the bus
+# 2) deducts money
+# 3) tells alls listeners of money_updated that money has been updated - useful
+#	 for ui updates
+func increase_speed():
+	if GameManager.money >= SPEED_COST:
+		speed += SPEED_INCREMENT
+		GameManager.money -= SPEED_COST
+		SignalBus.speed_increased.emit(self)
+	else:
+		print("Not enough money to increase speed.")
+
+# station.gd handles the passenger loading - just play sfx
+func load_passenger(p: Passenger) -> void:
 	audio_stream_player_3d.play()
+	passengers.push_back(p)
 
 func unload_passengers(station: Station) -> void:
 	var passengers_to_unload = passengers.filter(func(p): return p.target_station == station)
