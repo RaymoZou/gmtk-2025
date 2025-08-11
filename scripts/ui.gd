@@ -34,6 +34,7 @@ func render_bus_info(bus : Bus):
 	speed_button.text = "speed: %s" % bus.speed
 	speed_button.pressed.connect(bus.increase_speed)
 	speed_button.disabled = GameManager.money < Bus.SPEED_COST
+	speed_button.tooltip_text = "Current speed is %d. Cost to increase speed: $%d." % [bus.speed, Bus.SPEED_COST]
 	selectable_display.add_child(speed_button)
 
 	# capacity button
