@@ -2,8 +2,10 @@ extends Area3D
 
 class_name Bus
 
-const SPEED_INCREMENT: int = 2
+const SPEED_INCREMENT: int = 2 # how much to increase speed by
+const CAPACITY_INCREMENT: int = 1 # how much to increase capacity by
 const SPEED_COST : int = 50 # how much a speed increment costs
+const CAPACITY_COST: int = 150 # how much a capacity increment costs
 var passengers: Array[Passenger]
 var speed: int = 20
 var capacity: int = 3
@@ -36,9 +38,13 @@ func _on_input_event(_camera: Node, event: InputEvent, _event_position: Vector3,
 
 # TODO:
 func increase_capacity():
-	pass
+	if GameManager.money >= CAPACITY_COST:
+		capacity += CAPACITY_INCREMENT
+		GameManager.money -= CAPACITY_COST
+		SignalBus.capacity_increased.emit(self)
+	else:
+		print("Not enough money to increase capacity.")
 
-	
 # 1) increases the speed of the bus
 # 2) deducts money
 # 3) tells alls listeners of money_updated that money has been updated - useful

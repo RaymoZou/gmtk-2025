@@ -14,6 +14,7 @@ func _ready() -> void:
 	SignalBus.passenger_dropped_off.connect(_on_passenger_dropped_off)
 	SignalBus.selected.connect(_on_selected)
 	SignalBus.speed_increased.connect(render_bus_info) # Update bus info when speed is increased
+	SignalBus.capacity_increased.connect(render_bus_info) # Update bus info when capacity is increased
 
 func clear_selectable_display():
 	for child in selectable_display.get_children():
@@ -41,6 +42,8 @@ func render_bus_info(bus : Bus):
 	var capacity_button = Button.new()
 	capacity_button.text = "capacity: %s" % bus.capacity
 	capacity_button.pressed.connect(bus.increase_capacity)
+	capacity_button.disabled = GameManager.money < Bus.CAPACITY_COST
+	capacity_button.tooltip_text = "Current capacity is %d. Cost to increase capacity: $%d." % [bus.capacity, Bus.CAPACITY_COST]
 	selectable_display.add_child(capacity_button)
 
 func render_selected():
