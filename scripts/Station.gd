@@ -1,4 +1,4 @@
-extends Node
+extends Area3D
 
 class_name Station
 
@@ -15,10 +15,9 @@ var spawn_point: Vector3
 
 func _init() -> void:
 	print('Created another station')
-	# TODO: make a random name
 	
 func _ready() -> void:
-	# Regsiter station with GameManager
+	# Register station with GameManager
 	GameManager.stations.append(self)
 	SignalBus.selected.connect(_on_selected)
 	capacity = INITIAL_CAPACITY
@@ -27,18 +26,10 @@ func _ready() -> void:
 	%Timer.timeout.connect(spawn_passengers)
 	%Timer.start()
 	
-	# TODO: Maybe change this to use the station node position
-	var collision_node: CollisionShape3D = self.get_node("Area3D/CollisionShape3D")
-	var size = collision_node.shape.get_debug_mesh().get_aabb().size
-	spawn_point = (Vector3(-1, 0, 1) * size / 2) + Vector3(0, 0, 2)
-	
-	# Set up area collision detection
-	var area_node: Area3D = self.get_node("Area3D")
-	area_node.area_entered.connect(_on_area_entered)
-	var area3d : Area3D = $Area3D
-	area3d.input_event.connect(_on_input_event)
-	area3d.mouse_entered.connect(_on_mouse_entered)
-	area3d.mouse_exited.connect(_on_mouse_exited)
+	input_event.connect(_on_input_event)
+	mouse_entered.connect(_on_mouse_entered)
+	mouse_exited.connect(_on_mouse_exited)
+	area_entered.connect(_on_area_entered)
 
 func _on_input_event(_camera: Node, event: InputEvent, _event_position: Vector3, _normal: Vector3, _shape_idx: int):
 	if event is InputEventMouseButton:
