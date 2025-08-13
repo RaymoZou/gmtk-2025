@@ -6,10 +6,11 @@ class_name Station
 @export var passenger_scene: PackedScene
 const INITIAL_CAPACITY: int = 6 # Initial number of passengers at the station
 const SPAWN_TIME: float = 2.0 # Time between passenger spawns
-var curr_capacity: int
+var capacity: int
 var passengers: Array[Passenger]
 var spawn_point: Vector3
 @onready var mesh : MeshInstance3D = $model/Cube
+@onready var capacity_label : Label3D = %CapacityLabel
 @export var highlight_mat : Resource
 
 func _init() -> void:
@@ -20,7 +21,7 @@ func _ready() -> void:
 	# Regsiter station with GameManager
 	GameManager.stations.append(self)
 	SignalBus.selected.connect(_on_selected)
-	curr_capacity = INITIAL_CAPACITY
+	capacity = INITIAL_CAPACITY
 	%Timer.autostart = true
 	%Timer.wait_time = SPAWN_TIME
 	%Timer.timeout.connect(spawn_passengers)
@@ -36,12 +37,21 @@ func _ready() -> void:
 	area_node.area_entered.connect(_on_area_entered)
 	var area3d : Area3D = $Area3D
 	area3d.input_event.connect(_on_input_event)
-	
+	area3d.mouse_entered.connect(_on_mouse_entered)
+	area3d.mouse_exited.connect(_on_mouse_exited)
+
 func _on_input_event(_camera: Node, event: InputEvent, _event_position: Vector3, _normal: Vector3, _shape_idx: int):
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			mesh.material_overlay = highlight_mat
 			SignalBus.selected.emit(self)
+
+func _on_mouse_exited():
+	capacity_label.visible = false
+
+func _on_mouse_entered():
+	capacity_label.text = "%d/%d" % [passengers.size(), capacity]
+	capacity_label.visible = true
 
 func update_capacity():
 	# TODO:
@@ -70,7 +80,7 @@ func _on_area_entered(bus: Area3D) -> void:
 # spawns a passenger at station with random target station that is NOT itself
 # NOTE: there has to be at least 2 other stations in the main scene otherwise all_other_stations will be empty
 func spawn_passengers():
-	if passengers.size() >= curr_capacity:
+	if passengers.size() >= capacity:
 		print_debug("Station %s is at full capacity." % station_name)
 		return
 	var num_passengers = randf_range(1, 1)
