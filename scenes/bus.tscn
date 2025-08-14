@@ -24,4 +24,10 @@ shape = SubResource("BoxShape3D_n5sl8")
 
 [node name="bus" parent="." instance=ExtResource("4_38u8m")]
 
+[node name="CapacityLabel" type="Label3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, 0)
+pixel_size = 0.05
+billboard = 1
+
 [editable path="bus"]

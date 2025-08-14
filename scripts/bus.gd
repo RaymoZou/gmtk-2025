@@ -10,6 +10,7 @@ var passengers: Array[Passenger]
 var speed: int = 20
 var capacity: int = 3
 
+@onready var capacity_label : Label3D = %CapacityLabel
 @onready var audio_stream_player_3d: AudioStreamPlayer3D = %AudioStreamPlayer3D
 @export var highlight_mat: Resource
 @onready var mesh: MeshInstance3D = $bus/Cube
@@ -20,12 +21,20 @@ func _init() -> void:
 		print_debug("need a highlight material!")
 	SignalBus.selected.connect(_on_selected)
 	input_event.connect(_on_input_event)
-	
-	# NOTE: not sure if there's a better way of doing this but i'm just trying to initialize 
+	mouse_entered.connect(_on_mouse_entered)
+	mouse_exited.connect(_on_mouse_exited)
+	# NOTE: not sure if there's a better way of doing this but i'm just trying to initialize
 	#		passengers to be size capacity but empty
 	passengers.resize(capacity)
 	passengers.clear()
-	
+
+func _on_mouse_exited():
+	capacity_label.visible = false
+
+func _on_mouse_entered():
+	capacity_label.text = "%d/%d" % [passengers.size(), capacity]
+	capacity_label.visible = true
+
 func _on_selected(object: Node):
 	if object != self:
 		mesh.material_overlay = null
@@ -36,7 +45,6 @@ func _on_input_event(_camera: Node, event: InputEvent, _event_position: Vector3,
 			mesh.material_overlay = highlight_mat
 			SignalBus.selected.emit(self)
 
-# TODO:
 func increase_capacity():
 	if GameManager.money >= CAPACITY_COST:
 		capacity += CAPACITY_INCREMENT
