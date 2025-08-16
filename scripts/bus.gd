@@ -63,7 +63,7 @@ func increase_speed():
 	if GameManager.money >= SPEED_COST:
 		speed += SPEED_INCREMENT
 		GameManager.money -= SPEED_COST
-		SignalBus.speed_increased.emit(self)
+		SignalBus.bus_updated.emit(self)
 	else:
 		print("Not enough money to increase speed.")
 
@@ -84,18 +84,18 @@ func unload_passengers(station: Station) -> void:
 
 # BUS UPGRADES
 
-func increase_loading_time():
+func decrease_loading_time():
 	if GameManager.money >= LOADING_TIME_COST:
 		loading_time -= LOADING_TIME_INCREMENT
 		GameManager.money -= LOADING_TIME_COST
-		SignalBus.loading_time_increased.emit(self)
+		SignalBus.bus_updated.emit(self)
 	else:
-		print("Not enough money to increase loading time.")
+		print("Not enough money to decrease loading time.")
 
 func increase_capacity():
 	if GameManager.money >= CAPACITY_COST:
 		capacity += CAPACITY_INCREMENT
 		GameManager.money -= CAPACITY_COST
-		SignalBus.capacity_increased.emit(self)
+		SignalBus.bus_updated.emit(self)
 	else:
 		print("Not enough money to increase capacity.")

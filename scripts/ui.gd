@@ -12,9 +12,7 @@ func _ready() -> void:
 	GameManager.game_over.connect(_on_game_over)
 	SignalBus.passenger_dropped_off.connect(_on_passenger_dropped_off)
 	SignalBus.selected.connect(_on_selected)
-	SignalBus.speed_increased.connect(render_bus_info) # Update bus info when speed is increased
-	SignalBus.capacity_increased.connect(render_bus_info) # Update bus info when capacity is increased
-	SignalBus.loading_time_increased.connect(render_bus_info) # Update bus info when loading time is increased
+	SignalBus.bus_updated.connect(render_bus_info) # Update bus info when bus state changes
 	SignalBus.station_capacity_increased.connect(render_station_info) # Update station info when capacity is increased
 
 # creates a button to display in the UI
@@ -50,7 +48,7 @@ func render_bus_info(bus : Bus):
 	selectable_display.add_child(capacity_button)
 
 	# loading time button
-	var loading_time_button = create_ui_button("loading time: %s" % bus.loading_time, "Current loading time is %d. Cost to decrease loading time: $%d." % [bus.loading_time, Bus.LOADING_TIME_COST], bus.increase_loading_time)
+	var loading_time_button = create_ui_button("loading time: %s" % bus.loading_time, "Current loading time is %d. Cost to decrease loading time: $%d." % [bus.loading_time, Bus.LOADING_TIME_COST], bus.decrease_loading_time)
 	loading_time_button.disabled = GameManager.money < Bus.LOADING_TIME_COST
 	selectable_display.add_child(loading_time_button)
 

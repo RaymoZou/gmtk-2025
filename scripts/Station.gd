@@ -79,7 +79,7 @@ func _on_area_entered(bus: Area3D) -> void:
 # NOTE: there has to be at least 2 other stations in the main scene otherwise all_other_stations will be empty
 func spawn_passengers():
 	if passengers.size() >= capacity:
-		print_debug("Station %s is at full capacity." % station_name)
+		# print_debug("Station %s is at full capacity." % station_name)
 		return
 	var num_passengers = randf_range(1, 1)
 	var all_other_stations = GameManager.stations.filter(func(s): return s != self)
