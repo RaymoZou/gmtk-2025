@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://dtimdiouys0pr"]
 
 [ext_resource type="AudioStream" uid="uid://b5fw3mtbpm8jy" path="res://assets/money_sfxmp3.mp3" id="1_bq1v2"]
-[ext_resource type="Script" uid="uid://b0cqmqxobjo8d" path="res://audio_manager.gd" id="1_jisk1"]
+[ext_resource type="Script" uid="uid://b0cqmqxobjo8d" path="res://scripts/audio_manager.gd" id="1_jisk1"]
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer"]
 stream = ExtResource("1_bq1v2")

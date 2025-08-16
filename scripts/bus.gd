@@ -14,10 +14,12 @@ var speed: int = 20
 var capacity: int = 3
 
 @onready var capacity_label : Label3D = %CapacityLabel
-@onready var audio_stream_player_3d: AudioStreamPlayer3D = %AudioStreamPlayer3D
+@onready var audio_stream_player: AudioStreamPlayer = %AudioStreamPlayer
 @onready var mesh: MeshInstance3D = $bus/Cube
 @onready var load_timer: Timer = %Timer
 @export var highlight_mat: Resource
+@export var unload_passenger_sfx: AudioStream
+@export var load_passenger_sfx: AudioStream
 
 func _init() -> void:
 	# print("bus initialized")
@@ -54,28 +56,20 @@ func _on_input_event(_camera: Node, event: InputEvent, _event_position: Vector3,
 			mesh.material_overlay = highlight_mat
 			SignalBus.selected.emit(self)
 
-
-# 1) increases the speed of the bus
-# 2) deducts money
-# 3) tells alls listeners of money_updated that money has been updated - useful
-#	 for ui updates
-func increase_speed():
-	if GameManager.money >= SPEED_COST:
-		speed += SPEED_INCREMENT
-		GameManager.money -= SPEED_COST
-		SignalBus.bus_updated.emit(self)
-	else:
-		print("Not enough money to increase speed.")
-
 # station.gd handles the passenger loading - just play sfx
 func load_passenger(p: Passenger) -> void:
 	await load_timer.timeout
-	audio_stream_player_3d.play()
+	audio_stream_player.stop()
+	audio_stream_player.stream = load_passenger_sfx
+	audio_stream_player.play()
 	passengers.push_back(p)
 
+# NOTE: the unloading of all passengers is instantaneous, no need to wait. not sure if that will change in the future
 func unload_passengers(station: Station) -> void:
+	audio_stream_player.stop()
+	audio_stream_player.stream = unload_passenger_sfx
+	audio_stream_player.play()
 	var passengers_to_unload = passengers.filter(func(p): return p.target_station == station)
-	# print_debug("Unloading %s passengers at %s" % [len(passengers_to_unload), station])
 	for i in range(passengers_to_unload.size() - 1, -1, -1):
 		var passenger = passengers_to_unload[i]
 		if passenger.target_station == station:
@@ -83,7 +77,6 @@ func unload_passengers(station: Station) -> void:
 			passengers.remove_at(i)
 
 # BUS UPGRADES
-
 func decrease_loading_time():
 	if GameManager.money >= LOADING_TIME_COST:
 		loading_time -= LOADING_TIME_INCREMENT
@@ -99,3 +92,15 @@ func increase_capacity():
 		SignalBus.bus_updated.emit(self)
 	else:
 		print("Not enough money to increase capacity.")
+
+# 1) increases the speed of the bus
+# 2) deducts money
+# 3) tells alls listeners of money_updated that money has been updated - useful
+#	 for ui updates
+func increase_speed():
+	if GameManager.money >= SPEED_COST:
+		speed += SPEED_INCREMENT
+		GameManager.money -= SPEED_COST
+		SignalBus.bus_updated.emit(self)
+	else:
+		print("Not enough money to increase speed.")
