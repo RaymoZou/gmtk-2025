@@ -1,3 +1,4 @@
+# all inclusive script for managing ui - may break down into individual components later
 extends Control
 
 @onready var money_text : RichTextLabel = %MoneyLabel
@@ -17,35 +18,35 @@ func _ready() -> void:
 	SignalBus.capacity_increased.connect(render_bus_info) # Update bus info when capacity is increased
 	SignalBus.station_capacity_increased.connect(render_station_info) # Update station info when capacity is increased
 
+# creates a button to display in the UI
+func create_ui_button(text: String, tooltip: String, pressed_func: Callable) -> Button:
+	var button = Button.new()
+	button.text = text
+	button.tooltip_text = tooltip
+	button.pressed.connect(pressed_func)
+	return button
+
 func clear_selectable_display():
 	for child in selectable_display.get_children():
 		child.queue_free()
 
 func render_station_info(station: Station):
 	clear_selectable_display()
-	var capacity_button = Button.new()
-	capacity_button.text = "Capacity: %d" % station.capacity
-	capacity_button.tooltip_text = "Current capacity is %d. Cost to increase capacity: $%d." % [station.capacity, Station.CAPACITY_COST]
-	capacity_button.pressed.connect(station.increase_capacity)
+	var capacity_button = create_ui_button("capacity: %s" % station.capacity, "Current capacity is %d. Cost to increase capacity: $%d." % [station.capacity, Station.CAPACITY_COST], station.increase_capacity)
+	capacity_button.disabled = GameManager.money < Station.CAPACITY_COST
 	selectable_display.add_child(capacity_button)
 
 func render_bus_info(bus : Bus):
 	clear_selectable_display()
 	
 	# speed button
-	var speed_button = Button.new()
-	speed_button.text = "speed: %s" % bus.speed
-	speed_button.pressed.connect(bus.increase_speed)
+	var speed_button = create_ui_button("speed: %s" % bus.speed, "Current speed is %d. Cost to increase speed: $%d." % [bus.speed, Bus.SPEED_COST], bus.increase_speed)
 	speed_button.disabled = GameManager.money < Bus.SPEED_COST
-	speed_button.tooltip_text = "Current speed is %d. Cost to increase speed: $%d." % [bus.speed, Bus.SPEED_COST]
 	selectable_display.add_child(speed_button)
 
 	# capacity button
-	var capacity_button = Button.new()
-	capacity_button.text = "capacity: %s" % bus.capacity
-	capacity_button.pressed.connect(bus.increase_capacity)
+	var capacity_button = create_ui_button("capacity: %s" % bus.capacity, "Current capacity is %d. Cost to increase capacity: $%d." % [bus.capacity, Bus.CAPACITY_COST], bus.increase_capacity)
 	capacity_button.disabled = GameManager.money < Bus.CAPACITY_COST
-	capacity_button.tooltip_text = "Current capacity is %d. Cost to increase capacity: $%d." % [bus.capacity, Bus.CAPACITY_COST]
 	selectable_display.add_child(capacity_button)
 
 func render_selected():
