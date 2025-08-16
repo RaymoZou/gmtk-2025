@@ -50,7 +50,7 @@ func increase_capacity():
 	if GameManager.money >= CAPACITY_COST:
 		capacity += CAPACITY_INCREMENT
 		GameManager.money -= CAPACITY_COST
-		SignalBus.station_capacity_increased.emit(self)
+		SignalBus.station_updated.emit(self)
 	else:
 		print("Not enough money to increase capacity.")
 	

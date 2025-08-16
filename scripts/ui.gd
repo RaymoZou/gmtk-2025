@@ -13,7 +13,7 @@ func _ready() -> void:
 	SignalBus.passenger_dropped_off.connect(_on_passenger_dropped_off)
 	SignalBus.selected.connect(_on_selected)
 	SignalBus.bus_updated.connect(render_bus_info) # Update bus info when bus state changes
-	SignalBus.station_capacity_increased.connect(render_station_info) # Update station info when capacity is increased
+	SignalBus.station_updated.connect(render_station_info) # Update station info when capacity is increased
 
 # creates a button to display in the UI
 func create_ui_button(text: String, tooltip: String, pressed_func: Callable) -> Button:
