@@ -66,13 +66,15 @@ func _on_area_entered(bus: Area3D) -> void:
 	bus.unload_passengers(self)
 	var available_space : int = bus.capacity - bus.passengers.size()
 	var passengers_to_load : int = min(available_space, passengers.size())
+	var speed_buffer = bus.speed
+	bus.speed = 0
 	for i in passengers_to_load:
 		var p : Passenger = passengers.pop_front()
-		print_debug("loading passenger: %s" % p)
 		p.board_bus()
 		remove_child(p)
-		bus.load_passenger(p)
-		
+		await bus.load_passenger(p)
+	bus.speed = speed_buffer
+
 # spawns a passenger at station with random target station that is NOT itself
 # NOTE: there has to be at least 2 other stations in the main scene otherwise all_other_stations will be empty
 func spawn_passengers():
