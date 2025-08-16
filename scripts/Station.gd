@@ -5,6 +5,8 @@ class_name Station
 @export var station_name: String
 @export var passenger_scene: PackedScene
 const INITIAL_CAPACITY: int = 6 # Initial number of passengers at the station
+const CAPACITY_COST: int = 100 # Cost to increase capacity
+const CAPACITY_INCREMENT: int = 1 # how much to increase capacity by
 const SPAWN_TIME: float = 2.0 # Time between passenger spawns
 var capacity: int
 var passengers: Array[Passenger]
@@ -44,10 +46,13 @@ func _on_mouse_entered():
 	capacity_label.text = "%d/%d" % [passengers.size(), capacity]
 	capacity_label.visible = true
 
-func update_capacity():
-	# TODO:
-	print("updating capacity")
-	pass
+func increase_capacity():
+	if GameManager.money >= CAPACITY_COST:
+		capacity += CAPACITY_INCREMENT
+		GameManager.money -= CAPACITY_COST
+		SignalBus.station_capacity_increased.emit(self)
+	else:
+		print("Not enough money to increase capacity.")
 	
 # TODO: this is copy and paste from bus.gd - refactor into own scene
 func _on_selected(object: Node):

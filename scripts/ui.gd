@@ -15,6 +15,7 @@ func _ready() -> void:
 	SignalBus.selected.connect(_on_selected)
 	SignalBus.speed_increased.connect(render_bus_info) # Update bus info when speed is increased
 	SignalBus.capacity_increased.connect(render_bus_info) # Update bus info when capacity is increased
+	SignalBus.station_capacity_increased.connect(render_station_info) # Update station info when capacity is increased
 
 func clear_selectable_display():
 	for child in selectable_display.get_children():
@@ -22,10 +23,11 @@ func clear_selectable_display():
 
 func render_station_info(station: Station):
 	clear_selectable_display()
-	var button = Button.new()
-	button.text = station.name
-	button.pressed.connect(station.update_capacity)
-	selectable_display.add_child(button)
+	var capacity_button = Button.new()
+	capacity_button.text = "Capacity: %d" % station.capacity
+	capacity_button.tooltip_text = "Current capacity is %d. Cost to increase capacity: $%d." % [station.capacity, Station.CAPACITY_COST]
+	capacity_button.pressed.connect(station.increase_capacity)
+	selectable_display.add_child(capacity_button)
 
 func render_bus_info(bus : Bus):
 	clear_selectable_display()
