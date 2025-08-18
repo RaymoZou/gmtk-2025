@@ -78,7 +78,7 @@ func unload_passengers(station: Station) -> void:
 
 # BUS UPGRADES
 func decrease_loading_time():
-	if GameManager.money >= LOADING_TIME_COST:
+	if GameManager.money >= LOADING_TIME_COST and loading_time > 0:
 		loading_time -= LOADING_TIME_INCREMENT
 		load_timer.wait_time = loading_time
 		GameManager.money -= LOADING_TIME_COST
