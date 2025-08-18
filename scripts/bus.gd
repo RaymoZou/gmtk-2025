@@ -80,6 +80,7 @@ func unload_passengers(station: Station) -> void:
 func decrease_loading_time():
 	if GameManager.money >= LOADING_TIME_COST:
 		loading_time -= LOADING_TIME_INCREMENT
+		load_timer.wait_time = loading_time
 		GameManager.money -= LOADING_TIME_COST
 		SignalBus.bus_updated.emit(self)
 	else:
