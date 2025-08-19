@@ -1,0 +1,18 @@
+[gd_scene load_steps=6 format=3 uid="uid://b628gwjc7u31h"]
+
+[ext_resource type="Curve3D" uid="uid://ddkatqn4ao68i" path="res://curve0.tres" id="1_1b4qh"]
+[ext_resource type="Script" uid="uid://cbm8njihfvawg" path="res://scripts/track.gd" id="2_qcf88"]
+[ext_resource type="PackedScene" uid="uid://hrrmvxfuv0pg" path="res://scenes/bus.tscn" id="3_eydia"]
+[ext_resource type="PackedScene" uid="uid://dx5m5cj8p43b7" path="res://scenes/bus_path.tscn" id="4_ihy54"]
+[ext_resource type="PackedScene" uid="uid://d2xs4oddms7mq" path="res://scenes/loop0.tscn" id="5_4a6jl"]
+
+[node name="Track" type="Path3D"]
+curve = ExtResource("1_1b4qh")
+script = ExtResource("2_qcf88")
+bus_scene = ExtResource("3_eydia")
+bus_path_scene = ExtResource("4_ihy54")
+
+[node name="model" parent="." instance=ExtResource("5_4a6jl")]
+
+[editable path="model"]
+[editable path="model/loop0"]
