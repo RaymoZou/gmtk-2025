@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dx5m5cj8p43b7"]
+
+[ext_resource type="Script" uid="uid://dytohafinj5k7" path="res://scripts/bus_path.gd" id="1_onbl0"]
+
+[node name="BusPath" type="PathFollow3D"]
+script = ExtResource("1_onbl0")

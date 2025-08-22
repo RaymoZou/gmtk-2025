@@ -6,17 +6,23 @@ const SPEED_INCREMENT: int = 2 # how much to increase speed by
 const CAPACITY_INCREMENT: int = 1 # how much to increase capacity by
 const SPEED_COST : int = 50 # how much a speed increment costs
 const CAPACITY_COST: int = 150 # how much a capacity increment costs
+const LOADING_TIME_COST : int = 100 # how much a loading time increment costs
+const LOADING_TIME_INCREMENT: float = 0.5 # how much to decrease loading time by
+var loading_time: float = 2 # how long it takes to load a single passenger
 var passengers: Array[Passenger]
 var speed: int = 20
 var capacity: int = 3
 
 @onready var capacity_label : Label3D = %CapacityLabel
-@onready var audio_stream_player_3d: AudioStreamPlayer3D = %AudioStreamPlayer3D
-@export var highlight_mat: Resource
+@onready var audio_stream_player: AudioStreamPlayer = %AudioStreamPlayer
 @onready var mesh: MeshInstance3D = $bus/Cube
+@onready var load_timer: Timer = %Timer
+@export var highlight_mat: Resource
+@export var unload_passenger_sfx: AudioStream
+@export var load_passenger_sfx: AudioStream
 
 func _init() -> void:
-	print("bus initialized")
+	# print("bus initialized")
 	if highlight_mat == null:
 		print_debug("need a highlight material!")
 	SignalBus.selected.connect(_on_selected)
@@ -27,6 +33,11 @@ func _init() -> void:
 	#		passengers to be size capacity but empty
 	passengers.resize(capacity)
 	passengers.clear()
+
+func _ready() -> void:
+	load_timer.wait_time = loading_time
+	load_timer.start()
+	load_timer.autostart = false
 
 func _on_mouse_exited():
 	capacity_label.visible = false
@@ -45,11 +56,41 @@ func _on_input_event(_camera: Node, event: InputEvent, _event_position: Vector3,
 			mesh.material_overlay = highlight_mat
 			SignalBus.selected.emit(self)
 
+# station.gd handles the passenger loading - just play sfx
+func load_passenger(p: Passenger) -> void:
+	await load_timer.timeout
+	audio_stream_player.stop()
+	audio_stream_player.stream = load_passenger_sfx
+	audio_stream_player.play()
+	passengers.push_back(p)
+
+# NOTE: the unloading of all passengers is instantaneous, no need to wait. not sure if that will change in the future
+func unload_passengers(station: Station) -> void:
+	audio_stream_player.stop()
+	audio_stream_player.stream = unload_passenger_sfx
+	audio_stream_player.play()
+	var passengers_to_unload = passengers.filter(func(p): return p.target_station == station)
+	for i in range(passengers_to_unload.size() - 1, -1, -1):
+		var passenger = passengers_to_unload[i]
+		if passenger.target_station == station:
+			passenger.leave_bus()
+			passengers.remove_at(i)
+
+# BUS UPGRADES
+func decrease_loading_time():
+	if GameManager.money >= LOADING_TIME_COST and loading_time > 0:
+		loading_time -= LOADING_TIME_INCREMENT
+		load_timer.wait_time = loading_time
+		GameManager.money -= LOADING_TIME_COST
+		SignalBus.bus_updated.emit(self)
+	else:
+		print("Not enough money to decrease loading time.")
+
 func increase_capacity():
 	if GameManager.money >= CAPACITY_COST:
 		capacity += CAPACITY_INCREMENT
 		GameManager.money -= CAPACITY_COST
-		SignalBus.capacity_increased.emit(self)
+		SignalBus.bus_updated.emit(self)
 	else:
 		print("Not enough money to increase capacity.")
 
@@ -61,20 +102,6 @@ func increase_speed():
 	if GameManager.money >= SPEED_COST:
 		speed += SPEED_INCREMENT
 		GameManager.money -= SPEED_COST
-		SignalBus.speed_increased.emit(self)
+		SignalBus.bus_updated.emit(self)
 	else:
 		print("Not enough money to increase speed.")
-
-# station.gd handles the passenger loading - just play sfx
-func load_passenger(p: Passenger) -> void:
-	audio_stream_player_3d.play()
-	passengers.push_back(p)
-
-func unload_passengers(station: Station) -> void:
-	var passengers_to_unload = passengers.filter(func(p): return p.target_station == station)
-	print_debug("Unloading %s passengers at %s" % [len(passengers_to_unload), station])
-	for i in range(passengers_to_unload.size() - 1, -1, -1):
-		var passenger = passengers_to_unload[i]
-		if passenger.target_station == station:
-			passenger.leave_bus()
-			passengers.remove_at(i)

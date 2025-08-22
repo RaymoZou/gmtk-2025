@@ -16,9 +16,9 @@ signal game_over
 func _ready() -> void:
 	money_updated.emit(money)
 	SignalBus.passenger_dropped_off.connect(_on_passenger_dropped_off)
-	SignalBus.speed_increased.connect(_on_speed_increased)
+	SignalBus.bus_updated.connect(_on_bus_updated)
 
-func _on_speed_increased(_bus: Bus) -> void:
+func _on_bus_updated(_bus: Bus) -> void:
 	money_updated.emit(money)
 
 func _on_passenger_dropped_off(fare: int, satisfaction: int) -> void:

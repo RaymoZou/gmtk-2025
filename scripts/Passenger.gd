@@ -7,7 +7,7 @@ var origin_station: Station
 var target_station: Station
 var on_bus: bool = false
 const FARE : int = 5
-const PATIENCE_RATE: int = 5
+const PATIENCE_RATE: int = 1
 
 @onready var satisfaction_label = %SatisfactionLabel
 

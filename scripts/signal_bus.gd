@@ -1,6 +1,8 @@
 extends Node
 
-signal speed_increased(bus : Bus)
-signal capacity_increased(bus : Bus)
+# the state of a bus has changed
+signal bus_updated(bus : Bus)
+
+signal station_updated(station : Station)
 signal passenger_dropped_off(money: int, satisfaction: int)
 signal selected(object: Node)

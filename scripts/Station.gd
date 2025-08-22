@@ -5,6 +5,8 @@ class_name Station
 @export var station_name: String
 @export var passenger_scene: PackedScene
 const INITIAL_CAPACITY: int = 6 # Initial number of passengers at the station
+const CAPACITY_COST: int = 100 # Cost to increase capacity
+const CAPACITY_INCREMENT: int = 1 # how much to increase capacity by
 const SPAWN_TIME: float = 2.0 # Time between passenger spawns
 var capacity: int
 var passengers: Array[Passenger]
@@ -44,10 +46,13 @@ func _on_mouse_entered():
 	capacity_label.text = "%d/%d" % [passengers.size(), capacity]
 	capacity_label.visible = true
 
-func update_capacity():
-	# TODO:
-	print("updating capacity")
-	pass
+func increase_capacity():
+	if GameManager.money >= CAPACITY_COST:
+		capacity += CAPACITY_INCREMENT
+		GameManager.money -= CAPACITY_COST
+		SignalBus.station_updated.emit(self)
+	else:
+		print("Not enough money to increase capacity.")
 	
 # TODO: this is copy and paste from bus.gd - refactor into own scene
 func _on_selected(object: Node):
@@ -61,18 +66,20 @@ func _on_area_entered(bus: Area3D) -> void:
 	bus.unload_passengers(self)
 	var available_space : int = bus.capacity - bus.passengers.size()
 	var passengers_to_load : int = min(available_space, passengers.size())
+	var speed_buffer = bus.speed
+	bus.speed = 0
 	for i in passengers_to_load:
 		var p : Passenger = passengers.pop_front()
-		print_debug("loading passenger: %s" % p)
 		p.board_bus()
 		remove_child(p)
-		bus.load_passenger(p)
-		
+		await bus.load_passenger(p)
+	bus.speed = speed_buffer
+
 # spawns a passenger at station with random target station that is NOT itself
 # NOTE: there has to be at least 2 other stations in the main scene otherwise all_other_stations will be empty
 func spawn_passengers():
 	if passengers.size() >= capacity:
-		print_debug("Station %s is at full capacity." % station_name)
+		# print_debug("Station %s is at full capacity." % station_name)
 		return
 	var num_passengers = randf_range(1, 1)
 	var all_other_stations = GameManager.stations.filter(func(s): return s != self)

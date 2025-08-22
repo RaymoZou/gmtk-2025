@@ -13,7 +13,7 @@ dest_files=["res://.godot/imported/passenger_load.mp3-6b3d080f37f5fa043a76c6a9a2
 [params]
 
 loop=false
-loop_offset=0
-bpm=0
+loop_offset=0.0
+bpm=0.0
 beat_count=0
 bar_beats=4
