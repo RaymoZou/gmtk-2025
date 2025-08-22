@@ -35,10 +35,10 @@ func render_general_info():
 	label.fit_content = true
 	selectable_display.add_child(label)
 
-func render_track_info(track : Track):
-	clear_selectable_display()
-	var add_bus_button = create_ui_button("Add Bus", "Spawn a new bus on the track", track.spawn_bus)
-	selectable_display.add_child(add_bus_button)
+# func render_track_info(track : Track):
+# 	clear_selectable_display()
+# 	var add_bus_button = create_ui_button("Add Bus", "Spawn a new bus on the track", track.spawn_bus)
+# 	selectable_display.add_child(add_bus_button)
 
 # call the render functions below when the state of the stations or buses change
 func render_station_info(station: Station):

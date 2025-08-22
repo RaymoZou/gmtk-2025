@@ -4,9 +4,9 @@ class_name Track
 
 @export var bus_scene : PackedScene
 @export var bus_path_scene : PackedScene
-@onready var mesh : MeshInstance3D = $model/loop0/Loop1
+@onready var mesh : MeshInstance3D = $LoopMap0/loop0/Loop1
 
-const float BUS_SPAWN_OFFSET = 100.0
+const BUS_SPAWN_OFFSET : float = 100.0
 
 func _ready() -> void:
 	spawn_bus(BUS_SPAWN_OFFSET)

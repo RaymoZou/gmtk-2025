@@ -48,3 +48,6 @@ station_name = "LilacLake"
 
 [node name="ToffeeTownStation" parent="." instance=ExtResource("7_5vw27")]
 transform = Transform3D(-0.5, 0, -0.866026, 0, 1, 0, 0.866026, 0, -0.5, -59.9, 0, -51.8)
+
+[editable path="Path3D/LoopMap0"]
+[editable path="Path3D/LoopMap0/loop0"]
