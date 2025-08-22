@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://v7vywqu30d8u"]
+[gd_scene load_steps=10 format=3 uid="uid://v7vywqu30d8u"]
 
-[ext_resource type="Script" uid="uid://dytohafinj5k7" path="res://scripts/move.gd" id="1_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://bsqmo5gx3u1r8" path="res://scenes/camera.tscn" id="1_1bvp3"]
 [ext_resource type="PackedScene" uid="uid://hrrmvxfuv0pg" path="res://scenes/bus.tscn" id="1_ig7tw"]
 [ext_resource type="Curve3D" uid="uid://ddkatqn4ao68i" path="res://curve0.tres" id="2_kek77"]
 [ext_resource type="PackedScene" uid="uid://d2xs4oddms7mq" path="res://scenes/loop0.tscn" id="3_5vw27"]
+[ext_resource type="Script" uid="uid://cbm8njihfvawg" path="res://scripts/track.gd" id="3_tefeu"]
+[ext_resource type="PackedScene" uid="uid://dx5m5cj8p43b7" path="res://scenes/bus_path.tscn" id="5_tipki"]
 [ext_resource type="PackedScene" uid="uid://43qq4is5khe5" path="res://scenes/Station.tscn" id="7_5vw27"]
 [ext_resource type="PackedScene" uid="uid://irdt2436v4j2" path="res://scenes/loop1.tscn" id="7_272bh"]
 
@@ -29,15 +30,12 @@ transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 
 transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, -3, 9, 7)
 
 [node name="Path3D" type="Path3D" parent="."]
+unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -21)
 curve = ExtResource("2_kek77")
-
-[node name="PathFollow3D" type="PathFollow3D" parent="Path3D"]
-transform = Transform3D(0.495956, 0, -0.868342, 0, 1, 0, 0.868342, 0, 0.495956, -49.5031, 0, -42.58)
-script = ExtResource("1_0xm2m")
-
-[node name="Bus" parent="Path3D/PathFollow3D" instance=ExtResource("1_ig7tw")]
-unique_name_in_owner = true
+script = ExtResource("3_tefeu")
+bus_scene = ExtResource("1_ig7tw")
+bus_path_scene = ExtResource("5_tipki")
 
 [node name="LoopMap0" parent="Path3D" instance=ExtResource("3_5vw27")]
 

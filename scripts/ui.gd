@@ -27,6 +27,19 @@ func clear_selectable_display():
 	for child in selectable_display.get_children():
 		child.queue_free()
 
+# NOTE: assumes only one track, need to edit this function in the feature once we need to support multiple tracks
+func render_general_info():
+	clear_selectable_display()
+	var label = RichTextLabel.new()
+	label.text = "Click on a Bus or Station to view information"
+	label.fit_content = true
+	selectable_display.add_child(label)
+
+func render_track_info(track : Track):
+	clear_selectable_display()
+	var add_bus_button = create_ui_button("Add Bus", "Spawn a new bus on the track", track.spawn_bus)
+	selectable_display.add_child(add_bus_button)
+
 # call the render functions below when the state of the stations or buses change
 func render_station_info(station: Station):
 	clear_selectable_display()
@@ -58,7 +71,7 @@ func render_selected():
 	elif curr_selected is Bus:
 		render_bus_info(curr_selected as Bus)
 	else:
-		clear_selectable_display()
+		render_general_info()
 
 func _on_selected(object : Node):
 	curr_selected = object
