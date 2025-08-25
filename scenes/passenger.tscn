@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://b5cmvjy41uyh2"]
 
-[ext_resource type="Script" uid="uid://c7rucuxwewbbu" path="res://scripts/Passenger.gd" id="1_rejbp"]
+[ext_resource type="Script" uid="uid://c7rucuxwewbbu" path="res://scripts/passenger.gd" id="1_rejbp"]
 [ext_resource type="PackedScene" uid="uid://b48g36ombp0tv" path="res://assets/person.glb" id="2_56jbx"]
 
 [node name="Passenger" type="Node3D"]
