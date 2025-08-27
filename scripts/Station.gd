@@ -43,7 +43,7 @@ func _on_mouse_exited():
 	capacity_label.visible = false
 
 func _on_mouse_entered():
-	capacity_label.text = "%d/%d" % [passengers.size(), capacity]
+	capacity_label.text = "%s: %d/%d" % [station_name, passengers.size(), capacity]
 	capacity_label.visible = true
 
 func increase_capacity():
